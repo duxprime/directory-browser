@@ -1,0 +1,31 @@
+.clickable {
+    cursor: pointer;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.half-width{
+    width: 50%;
+}
+
+.centered {
+    text-align: center;
+}
+
+.align-left {
+    text-align: left;
+}
+
+.align-right {
+    text-align: right;
+}
+
+.highlight-hover:hover {
+    background-color:silver;
+}
+
+.underline-hover:hover {
+    text-decoration: underline;
+}

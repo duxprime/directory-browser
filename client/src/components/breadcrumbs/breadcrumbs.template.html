@@ -1,0 +1,6 @@
+<div class="breadcrumb-container" data-bind="foreach: path">
+    <div class="breadcrumb clickable" 
+        data-bind="attr: {title: name}, click: $component.navigateToSegment">
+        <div data-bind="text:name" class="underline-hover"></div>
+    </div>
+</div>

@@ -1,0 +1,22 @@
+<breadcrumbs params="id: id"></breadcrumbs>
+<h3 data-bind="text: countLabel"></h3>
+<h3 class="clickable" data-bind="click: navigateUp, if: hasParent">↑ Up</h3>
+<button data-bind="click: upload">Upload</button>
+<table class="full-width" data-bind="if: hasContent">
+    <thead>
+        <tr>
+            <th class="align-left">Name</th>
+            <th class="align-right">Created</th>
+            <th class="align-right">Type</th>
+            <th class="align-right">Size (MB)</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach: items">
+        <tr data-bind="attr: {title: path}, click: $component.selectItem" class="clickable highlight-hover">
+            <td class="align-left" data-bind="text: name"></td>
+            <td class="align-right" data-bind="text: $component.formatDate(dateCreated)" ></td>
+            <td class="align-right" data-bind="text: type === 'File' ? extension : 'Directory'"></td>
+            <td class="align-right" data-bind="text: type === 'File' ? $component.formatBytes(size) : ''"></td>
+        </tr>
+    </tbody>
+</table>
