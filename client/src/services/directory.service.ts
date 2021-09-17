@@ -38,4 +38,17 @@ export class DirectoryService{
 
         return this.http.getBinary(uri);
     }
+
+    /**
+     * Create a folder within the specified directory.
+     * 
+     * @param dir The directory to create a new folder in.
+     */
+    public async createDirectory(dir: Folder, dirName: string) {
+        const { links } = dir;
+
+        return this.http.post<Folder>(links.self, {
+            dirName
+        });
+    }
 }

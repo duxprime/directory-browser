@@ -81,42 +81,56 @@ export class DirectoryComponent implements OnInit {
             ...uploaded
         ]);
     }
-    
+
+    public async createFolder() {
+        const folderName = prompt('Enter folder name');
+
+        if (!folderName) {
+            return;
+        }
+
+        const dir = await this.dirService.createDirectory(this.dir, folderName);
+        this.items([
+            ...this.items(),
+            dir
+        ]);
+    }
+
     /**
      * Formats a UTC date string as a US date.
      * 
      * @param dateString UTC date string
      * @returns en-US string in MM/DD/YYYY format
      */
-    public formatDate(dateString:string){
+    public formatDate(dateString: string) {
         return usDateFormat.format(new Date(dateString));
     }
 
     /**
      * Convert bytes to megabytes.
      */
-    public formatBytes(bytes:number){
-        return (bytes/1024/1024).toFixed(2);
+    public formatBytes(bytes: number) {
+        return (bytes / 1024 / 1024).toFixed(2);
     }
 
-    public dispose(){
+    public dispose() {
         this.handles.forEach(handle => handle.revoke());
     }
 
-    private async getDir(){
-        return this.id === 'home' ? 
+    private async getDir() {
+        return this.id === 'home' ?
             await this.homeService.getHome() :
             await this.dirService.getDirectory(this.id);
     }
 
-    private async getContent(){
+    private async getContent() {
         return this.id === 'home' ?
             await this.homeService.getHomeContent() :
             await this.dirService.getDirectoryContent(this.dir);
     }
 
-    private async downloadFile(file:File){
-        const {name, extension} = file;
+    private async downloadFile(file: File) {
+        const { name, extension } = file;
         const blob = await this.dirService.getFile(file.id);
         const handle = this.fileService.download(blob, `${name}.${extension}`);
         this.handles.push(handle);
