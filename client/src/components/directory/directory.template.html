@@ -15,7 +15,7 @@
     <tbody data-bind="foreach: items">
         <tr data-bind="attr: {title: path}, click: $component.selectItem" class="clickable highlight-hover">
             <td class="align-left" data-bind="text: name"></td>
-            <td class="align-right" data-bind="text: $component.formatDate(dateCreated)" ></td>
+            <td class="align-right" data-bind="text: $component.formatDate(dateCreated)"></td>
             <td class="align-right" data-bind="text: type === 'File' ? extension : 'Directory'"></td>
             <td class="align-right" data-bind="text: type === 'File' ? $component.formatBytes(size) : ''"></td>
         </tr>

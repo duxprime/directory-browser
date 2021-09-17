@@ -1,6 +1,6 @@
 import { SettingsService } from './settings.service';
 
-const sharedConfig:RequestInit = {
+const sharedConfig: RequestInit = {
     headers: {
         'Content-Type': 'application/json'
     }
@@ -12,24 +12,24 @@ const sharedConfig:RequestInit = {
  */
 export class HttpService {
     constructor(
-        private settings:SettingsService
-    ){
+        private settings: SettingsService
+    ) {
     }
 
-    public async get<T>(path:string){
+    public async get<T>(path: string) {
         const uri = this.constructFullPath(path);
-        const response = await fetch(uri,  createConfig({
+        const response = await fetch(uri, createConfig({
             method: 'GET'
         }));
 
         return await response.json() as T;
     }
 
-    public async getBinary(path:string){
+    public async getBinary(path: string) {
         const uri = this.constructFullPath(path);
         const response = await fetch(uri, {
             method: 'GET',
-            headers :{
+            headers: {
                 'Content-Type': 'application/octet-stream'
             }
         });
@@ -58,11 +58,11 @@ export class HttpService {
         return await response.json() as T;
     }
 
-    private constructFullPath(relativePath:string){
+    private constructFullPath(relativePath: string) {
         return `${this.settings.apiUri}${relativePath}`;
     }
 }
 
-function createConfig(partialConfig:RequestInit){
+function createConfig(partialConfig: RequestInit) {
     return Object.assign({}, sharedConfig, partialConfig);
 }
