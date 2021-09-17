@@ -38,17 +38,22 @@ export class HttpService {
     }
 
 
-    public async post<T>(path:string, body:BodyInit){
+    public async post<T>(path: string, body: Blob | FormData | string | object) {
         const uri = this.constructFullPath(path);
-        let config:RequestInit = {
+        if (!(body instanceof Blob || body instanceof FormData || typeof body === 'string')) {
+            // support arbitrary JSON body
+            body = JSON.stringify(body);
+        }
+
+        let config: RequestInit = {
             method: 'POST',
             body
         };
 
-        if(!(body instanceof FormData)){
+        if (!(body instanceof FormData)) {
             config = createConfig(config);
         }
-        
+
         const response = await fetch(uri, config);
         return await response.json() as T;
     }
