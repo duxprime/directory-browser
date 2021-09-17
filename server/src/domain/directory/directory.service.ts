@@ -1,6 +1,6 @@
 import { Injectable, Inject, CACHE_MANAGER } from '@nestjs/common';
 import { Cache } from 'cache-manager';
-import { access, readdir, stat, writeFile } from 'fs/promises';
+import { access, readdir, mkdir, stat, writeFile } from 'fs/promises';
 import { constants, createReadStream } from 'fs';
 import { createDirectoryItem, DirectoryItem, Folder } from './directory.model';
 import { join, normalize } from 'path';
@@ -58,7 +58,7 @@ export class DirectoryService {
 
     private async getDirectoryItemByPath(path: string) {
         path = normalizePath(path);
-        await tryAcces(path);
+        await tryAccess(path);
         const stats = await stat(path);
 
         const item = createDirectoryItem(path, stats, path === this.settings.homeDirectory);
@@ -69,7 +69,7 @@ export class DirectoryService {
 
     private async getDirectoryContentByPath(path: string) {
         path = normalizePath(path);
-        await tryAcces(path);
+        await tryAccess(path);
         const files = await readdir(path, {
             withFileTypes: true
         });
@@ -111,13 +111,13 @@ export class DirectoryService {
     }
 
     public async getFileByPath(path: string) {
-        await tryAcces(path);
+        await tryAccess(path);
         return createReadStream(path);
     }
 
     public async addFile(id: string, files: Express.Multer.File[]) {
         const path = normalizePath(this.idService.resolveId(id));
-        await tryAcces(path);
+        await tryAccess(path);
 
         const dirItems: DirectoryItem[] = [];
         const cachedContentIds = (await this.cache.get<string[]>(path)) || [];
@@ -136,6 +136,29 @@ export class DirectoryService {
         this.cache.set(path, cachedContentIds);
         return dirItems;
     }
+
+    /**
+     * Create a new directory in a parent directory.
+     * 
+     * @param id The ID of the parent directory.
+     * @param dirName The name of the directory to be created.
+     */
+    public async createDirectory(id: string, dirName: string) {
+        const parentPath = normalizePath(this.idService.resolveId(id));
+        await tryAccess(parentPath);
+
+        const path = `${parentPath}/${dirName}`;
+        await mkdir(path);
+
+        const dir = await this.getDirectoryItemByPath(path) as Folder;
+
+        // update cache at parent to include new content
+        const cachedContentIds = (await this.cache.get<string[]>(parentPath)) || [];
+        cachedContentIds.push(dir.id);
+        this.cache.set(parentPath, cachedContentIds);
+
+        return dir;
+    }
 }
 
 function normalizePath(path: string) {
@@ -148,6 +171,6 @@ function normalizePath(path: string) {
     return path;
 }
 
-async function tryAcces(path) {
+async function tryAccess(path) {
     await access(path, constants.R_OK | constants.W_OK);
 }

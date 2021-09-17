@@ -1,4 +1,5 @@
 import {
+    Body,
     Controller,
     Get,
     Post,
@@ -11,6 +12,8 @@ import {
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { Response } from 'express';
 import { DirectoryService } from './directory.service';
+import { Folder } from './directory.model';
+import { dirname } from 'path';
 
 @Controller()
 export class DirectoryController {
@@ -34,6 +37,16 @@ export class DirectoryController {
         @Param('id') id: string
     ) {
         return this.directoryService.getDirectoryItemById(id);
+    }
+
+    @Post('directory/:id')
+    public async createDirectory(
+        @Param('id') id: string,
+        @Body() createDirDto: { dirName: string }
+    ) {
+        const { dirName } = createDirDto;
+        const dir = await this.directoryService.createDirectory(id, dirName);
+        return dir;
     }
 
     @Get('directory/:id/content')

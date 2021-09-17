@@ -11,7 +11,7 @@ export class IdService {
     }
 
     /**
-     * @param id The unique ID of a director item.
+     * @param id The unique ID of a directory item.
      * @returns The path on disk the item resides at.
      */
     public resolveId(id: string) {
