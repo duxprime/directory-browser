@@ -51,4 +51,10 @@ export class DirectoryService {
             dirName
         });
     }
+
+    public deleteItem(item: DirectoryItem) {
+        const { links } = item;
+
+        return this.http.delete(links.self);
+    }
 }

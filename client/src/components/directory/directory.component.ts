@@ -58,6 +58,19 @@ export class DirectoryComponent implements OnInit {
         }
     }
 
+    public deleteItem = async (item: DirectoryItem, e: Event) => {
+        e.stopPropagation();
+
+        const msg = `Are you sure you wish to delete ${item.name}?`;
+        if (!confirm(msg)) {
+            return;
+        };
+
+        this.dirService.deleteItem(item);
+        const items = this.items().filter(i => i.id !== item.id);
+        this.items(items);
+    }
+
     // explicitly make this an arrow function to preserve 'this' context in binding
     public navigateUp = async () => {
         const parent = await this.dirService.getParent(this.dir);

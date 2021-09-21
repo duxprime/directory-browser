@@ -10,6 +10,7 @@
             <th class="align-right">Created</th>
             <th class="align-right">Type</th>
             <th class="align-right">Size (MB)</th>
+            <th class="align-right">Delete</th>
         </tr>
     </thead>
     <tbody data-bind="foreach: items">
@@ -18,6 +19,7 @@
             <td class="align-right" data-bind="text: $component.formatDate(dateCreated)"></td>
             <td class="align-right" data-bind="text: type === 'File' ? extension : 'Directory'"></td>
             <td class="align-right" data-bind="text: type === 'File' ? $component.formatBytes(size) : ''"></td>
+            <td class="align-right bold clickable" data-bind="click: $component.deleteItem">X</td>
         </tr>
     </tbody>
 </table>
