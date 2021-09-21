@@ -1,12 +1,14 @@
 import { Injectable, Inject, CACHE_MANAGER } from '@nestjs/common';
 import { Cache } from 'cache-manager';
-import { access, readdir, mkdir, stat, writeFile } from 'fs/promises';
+import { access, readdir, mkdir, stat, unlink, writeFile } from 'fs/promises';
 import { constants, createReadStream } from 'fs';
 import { createDirectoryItem, DirectoryItem, Folder } from './directory.model';
 import { join, normalize } from 'path';
 import { exists } from '../../common';
 import { IdService } from '../../services';
 import { SettingsService } from '../../services';
+
+const del: (path: string, options?: Object) => Promise<void> = require('del');
 
 @Injectable()
 export class DirectoryService {
@@ -171,6 +173,24 @@ export class DirectoryService {
         this.cache.set(parentPath, cachedContentIds);
 
         return dir;
+    }
+
+    public async deleteDirectory(id: string) {
+        const path = normalizePath(this.idService.resolveId(id));
+        await tryAccess(path);
+        await del(`${path}`, {
+            force: true
+        });
+        this.cache.del(path);
+        this.cache.del(id);
+    }
+
+    public async deleteFile(id: string) {
+        const path = normalizePath(this.idService.resolveId(id));
+        await tryAccess(path);
+        await unlink(path);
+        this.cache.del(path);
+        this.cache.del(id);
     }
 }
 

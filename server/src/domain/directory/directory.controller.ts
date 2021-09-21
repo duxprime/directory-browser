@@ -3,9 +3,11 @@ import {
     Controller,
     Get,
     Post,
+    Delete,
     Param,
     Header,
     HttpStatus,
+    HttpCode,
     Res,
     UploadedFiles,
     UseInterceptors
@@ -57,6 +59,14 @@ export class DirectoryController {
         return dir;
     }
 
+    @Delete('directory/:id')
+    @HttpCode(HttpStatus.NO_CONTENT)
+    public async deleteDirectory(
+        @Param('id') id: string
+    ) {
+        return this.directoryService.deleteDirectory(id);
+    }
+
     @Get('directory/:id/content')
     public getContentForId(
         @Param('id') id: string
@@ -82,5 +92,13 @@ export class DirectoryController {
         const stream = await this.directoryService.getFileById(id);
 
         return stream.pipe(resp);
+    }
+
+    @Delete('file/:id')
+    @HttpCode(HttpStatus.NO_CONTENT)
+    public async deleteFile(
+        @Param('id') id: string
+    ) {
+        return this.directoryService.deleteFile(id);
     }
 }
