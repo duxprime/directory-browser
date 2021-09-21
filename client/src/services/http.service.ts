@@ -58,6 +58,20 @@ export class HttpService {
         return await response.json() as T;
     }
 
+    public async delete<T = void>(path: string) {
+        const uri = this.constructFullPath(path);
+        const response = await fetch(uri, {
+            method: 'DELETE'
+        });
+
+        // no content
+        if (response.status === 204) {
+            return;
+        }
+
+        return await response.json() as T;
+    }
+
     private constructFullPath(relativePath: string) {
         return `${this.settings.apiUri}${relativePath}`;
     }
