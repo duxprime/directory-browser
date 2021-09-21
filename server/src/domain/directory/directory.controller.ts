@@ -5,6 +5,7 @@ import {
     Post,
     Param,
     Header,
+    HttpStatus,
     Res,
     UploadedFiles,
     UseInterceptors
@@ -12,8 +13,8 @@ import {
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { Response } from 'express';
 import { DirectoryService } from './directory.service';
-import { Folder } from './directory.model';
-import { dirname } from 'path';
+import { exists } from '../../common/util';
+
 
 @Controller()
 export class DirectoryController {
@@ -33,10 +34,17 @@ export class DirectoryController {
     }
 
     @Get('directory/:id')
-    public getDirectoryItem(
-        @Param('id') id: string
+    public async getDirectoryItem(
+        @Param('id') id: string,
+        @Res() res: Response
     ) {
-        return this.directoryService.getDirectoryItemById(id);
+        const item = await this.directoryService.getDirectoryItemById(id);
+        if (!exists(item)) {
+            res.status(HttpStatus.NOT_FOUND).send();
+            return;
+        }
+
+        res.status(HttpStatus.FOUND).json(item).send();
     }
 
     @Post('directory/:id')

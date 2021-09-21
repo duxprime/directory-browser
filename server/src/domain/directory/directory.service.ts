@@ -56,9 +56,22 @@ export class DirectoryService {
         return this.getDirectoryContentByPath(path);
     }
 
-    private async getDirectoryItemByPath(path: string) {
+    private async getDirectoryItemByPath(path: string): Promise<DirectoryItem | void> {
         path = normalizePath(path);
-        await tryAccess(path);
+
+        try {
+            await tryAccess(path);
+        }
+        catch (e) {
+            const error = e as NodeJS.ErrnoException;
+            if (error.code === 'ENOENT' && error.errno === -4058) {
+                return undefined;
+            }
+            else {
+                throw e;
+            }
+        }
+
         const stats = await stat(path);
 
         const item = createDirectoryItem(path, stats, path === this.settings.homeDirectory);
@@ -171,6 +184,6 @@ function normalizePath(path: string) {
     return path;
 }
 
-async function tryAccess(path) {
+async function tryAccess(path: string) {
     await access(path, constants.R_OK | constants.W_OK);
 }
