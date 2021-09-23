@@ -43,7 +43,7 @@ export class DirectoryService {
         if (parentItem) {
             const contentIds = await this.cache.get<string[]>(parentItem.path);
             if (contentIds) {
-                const items = await Promise.all(contentIds.map(id => this.getDirectoryItemById(id)));
+                const items = (await Promise.all(contentIds.map(id => this.getDirectoryItemById(id)))).filter(exists);
 
                 return {
                     items,
