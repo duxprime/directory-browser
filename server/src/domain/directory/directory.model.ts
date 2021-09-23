@@ -9,10 +9,10 @@ export abstract class DirectoryItem {
     public readonly dateCreated: Date;
     public abstract readonly name: string;
     public abstract readonly type: 'File' | 'Folder';
-    public links = {
+    public readonly links = {
         parent: '',
         self: '',
-        path: []
+        path: [] as string[]
     }
 
     constructor(
@@ -30,7 +30,6 @@ export abstract class DirectoryItem {
         const pathSegments = getPathSegments(this.path);
         pathSegments.pop();
         const parentId = StaticIdService.createId(pathSegments.join(PATH_SEPARATOR));
-        this.links.self = `/${this.type === 'Folder' ? 'directory' : 'file'}/${this.id}`;
         this.links.parent = pathSegments.length < 1 ? '' : `/directory/${parentId}`;
         this.links.path = this.generatePathLinks(pathSegments);
     }
@@ -62,10 +61,9 @@ export class File extends DirectoryItem {
         this.extension = nameParts.pop();
         this.name = nameParts.join(FILE_NAME_SEPARATOR);
         this.size = stats.size;
+        this.links.self = `/file/{this.id}`;
     }
 }
-
-
 
 export class Folder extends DirectoryItem {
     public readonly type = 'Folder';
@@ -87,6 +85,7 @@ export class Folder extends DirectoryItem {
         const pathSegments = getPathSegments(path);
         this.isRoot = pathSegments.length === 1;
         this.name = pathSegments.pop();
+        this.links.self = `/directory/${this.id}`;
     }
 }
 
