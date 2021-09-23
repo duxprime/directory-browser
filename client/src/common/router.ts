@@ -137,6 +137,7 @@ export class Router {
     private setDefaultRoute(){
         const defaultRouteIndex = this.routes.findIndex(r => isRouteRedirect(r) && r.path === WILD_CARD_ROUTE);
         if(!defaultRouteIndex){
+        if (defaultRouteIndex < 0) {
             return;
         }
 
