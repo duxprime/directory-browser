@@ -2,29 +2,31 @@ import { Router, ServiceRegistry, Ctor } from './common';
 import { appRoutes } from './components/app';
 import { homeRoutes } from './views/home';
 import { directoryRoutes } from './components/directory';
-import { 
-    DirectoryService, 
-    HttpService, 
-    SettingsService, 
+import { errorRoutes } from './components/error';
+import {
+    DirectoryService,
+    HttpService,
+    SettingsService,
     HomeService,
-    FileService 
+    FileService
 } from './services';
 
 const routes = [
     ...appRoutes,
     ...homeRoutes,
-    ...directoryRoutes
+    ...directoryRoutes,
+    ...errorRoutes
 ];
 type ServiceDefinition<T> = [Ctor<T>, T];
 const router = new Router(routes);
 const registry = new ServiceRegistry();
 const settings = new SettingsService();
 const http = new HttpService(settings);
-const home = new HomeService(http);   
+const home = new HomeService(http);
 const dir = new DirectoryService(http);
 const file = new FileService(http);
 
-const services:ServiceDefinition<object>[] = [
+const services: ServiceDefinition<object>[] = [
     [Router, router],
     [SettingsService, settings],
     [HttpService, http],
@@ -33,7 +35,7 @@ const services:ServiceDefinition<object>[] = [
     [FileService, file]
 ];
 
-export function registerServices(){
+export function registerServices() {
     services.forEach(([type, instance]) => {
         registry.registerService(type, instance);
     });
