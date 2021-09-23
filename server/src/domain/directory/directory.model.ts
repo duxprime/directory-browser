@@ -11,7 +11,7 @@ export abstract class DirectoryItem {
     public abstract readonly type: 'File' | 'Folder';
     public links = {
         parent: '',
-        self: `/directory/${this.id}`,
+        self: '',
         path: []
     }
 
@@ -30,6 +30,7 @@ export abstract class DirectoryItem {
         const pathSegments = getPathSegments(this.path);
         pathSegments.pop();
         const parentId = StaticIdService.createId(pathSegments.join(PATH_SEPARATOR));
+        this.links.self = `/${this.type === 'Folder' ? 'directory' : 'file'}/${this.id}`;
         this.links.parent = pathSegments.length < 1 ? '' : `/directory/${parentId}`;
         this.links.path = this.generatePathLinks(pathSegments);
     }
