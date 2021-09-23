@@ -1,11 +1,17 @@
 import { RouteDefiniton } from '../../common';
 import { HomeRoute } from '../../views/home';
 
-const DefaultRoute = {
+const CatchallRoute = {
     path: '*',
+    redirect: HomeRoute,
+};
+
+const DefaultRoute = {
+    path: '/',
     redirect: HomeRoute
 };
 
-export const appRoutes:RouteDefiniton[] = [
+export const appRoutes: RouteDefiniton[] = [
+    CatchallRoute,
     DefaultRoute
 ];

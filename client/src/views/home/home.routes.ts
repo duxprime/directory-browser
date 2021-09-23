@@ -1,9 +1,9 @@
 import { RouteDefiniton } from '../../common';
 export const HomeRoute = {
-    path:'/',
+    path: '/home',
     getTemplate: () => '<home-view></home-view>'
 };
 
-export const homeRoutes:RouteDefiniton[] = [
+export const homeRoutes: RouteDefiniton[] = [
     HomeRoute
 ];
