@@ -22,7 +22,7 @@ export class HttpService {
             method: 'GET'
         }));
 
-        return await response.json() as T;
+        return guardResponse<T>(response);
     }
 
     public async getBinary(path: string) {
@@ -55,7 +55,7 @@ export class HttpService {
         }
 
         const response = await fetch(uri, config);
-        return await response.json() as T;
+        return guardResponse<T>(response);
     }
 
     public async delete<T = void>(path: string) {
@@ -64,18 +64,25 @@ export class HttpService {
             method: 'DELETE'
         });
 
-        // no content
-        if (response.status === 204) {
-            return;
-        }
-
-        return await response.json() as T;
+        return guardResponse<T>(response);
     }
 
     private constructFullPath(relativePath: string) {
         return `${this.settings.apiUri}${relativePath}`;
     }
 }
+
+async function guardResponse<T = void>(resp: Response) {
+    switch (resp.status) {
+        case 404:
+            throw new Error(`Resource not found: ${resp.url}`);
+        case 204:
+            return {} as T;
+        default:
+            return await resp.json() as T;
+    }
+}
+
 
 function createConfig(partialConfig: RequestInit) {
     return Object.assign({}, sharedConfig, partialConfig);
