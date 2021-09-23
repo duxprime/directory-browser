@@ -39,7 +39,14 @@ export class DirectoryComponent implements OnInit {
     }
 
     public async onInit() {
-        this.dir = await this.getDir();
+        try {
+            this.dir = await this.getDir();
+        }
+        catch (e) {
+            this.router.navigate('/error');
+            return;
+        }
+
         this.hasParent(this.dir.links.parent.length > 0);
         this.dirName(this.dir.path);
 
