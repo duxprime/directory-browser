@@ -61,7 +61,7 @@ export class File extends DirectoryItem {
         this.extension = nameParts.pop();
         this.name = nameParts.join(FILE_NAME_SEPARATOR);
         this.size = stats.size;
-        this.links.self = `/file/{this.id}`;
+        this.links.self = `/file/${this.id}`;
     }
 }
 
