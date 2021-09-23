@@ -1,13 +1,13 @@
 import { ComponentDefinition } from '../../common';
-import { ErrorComponent } from './error.component';
+import { ErrorView } from './error.view';
 export * from './error.routes';
 
 const errorTemplate = require('./error.template.html');
 
-export const ErrorComponentDefinition: ComponentDefinition = {
+export const ErrorViewDefinition: ComponentDefinition = {
     name: 'error',
     definition: {
-        viewModel: ErrorComponent,
+        viewModel: ErrorView,
         template: errorTemplate
     }
 };

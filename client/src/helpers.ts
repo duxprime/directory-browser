@@ -2,7 +2,7 @@ import { Router, ServiceRegistry, Ctor } from './common';
 import { appRoutes } from './components/app';
 import { homeRoutes } from './views/home';
 import { directoryRoutes } from './components/directory';
-import { errorRoutes } from './components/error';
+import { errorRoutes } from './views/error';
 import {
     DirectoryService,
     HttpService,

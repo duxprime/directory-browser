@@ -1,7 +1,7 @@
 import { ServiceRegistry, Router } from '../../common';
 
 
-export class ErrorComponent {
+export class ErrorView {
     private get router() {
         return this.services.getService(Router);
     }
