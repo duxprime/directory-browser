@@ -1,5 +1,5 @@
 import { observable } from 'knockout';
-import { exists } from '../common';
+import { exists } from 'utils/functions';
 
 interface RouteToTemplate {
     path: string;

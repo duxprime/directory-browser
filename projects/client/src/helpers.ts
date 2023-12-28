@@ -1,4 +1,7 @@
-import { Router, ServiceRegistry, Ctor } from './common';
+
+import { Ctor } from 'utils/types';
+import { ServiceRegistry } from 'utils/services';
+import { Router } from './common';
 import { appRoutes } from './components/app';
 import { homeRoutes } from './views/home';
 import { directoryRoutes } from './components/directory';

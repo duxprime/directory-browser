@@ -20,7 +20,8 @@
     "test": "npm run test --workspaces"
   },
   "workspaces": [
-    "projects/*"
+    "projects/*",
+    "true"
   ],
   "author": "Chris Duxbury",
   "license": "ISC"

@@ -1,4 +1,4 @@
-import { Ctor } from './types';
+import { Ctor } from '../types';
 
 /**
  * Implements a lightweight [service locator](https://en.wikipedia.org/wiki/Service_locator_pattern)
@@ -7,13 +7,13 @@ import { Ctor } from './types';
 export class ServiceRegistry {
     private registry = new WeakMap<Ctor<unknown>, object>();
 
-    public registerService<T extends object>(key:Ctor<T>, instance:T){
+    public registerService<T extends object>(key: Ctor<T>, instance: T) {
         this.registry.set(key, instance);
     }
 
-    public getService<T extends object>(key:Ctor<T>) {
+    public getService<T extends object>(key: Ctor<T>) {
         const service = this.registry.get(key);
-        if(!service){
+        if (!service) {
             throw new Error(`Could not retrieve service ${key.name}`);
         }
 

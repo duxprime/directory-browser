@@ -1,5 +1,6 @@
 import { components } from 'knockout';
-import { ServiceRegistry, exists } from '../common';
+import { exists } from 'utils/functions';
+import { ServiceRegistry } from 'utils/services';
 import * as ko from 'knockout';
 
 export type ViewModel = components.ViewModel;

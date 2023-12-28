@@ -1,4 +1,5 @@
-import { ServiceRegistry, Router } from '../../common';
+import { ServiceRegistry } from 'utils/services';
+import { Router } from '../../common';
 
 
 export class ErrorView {

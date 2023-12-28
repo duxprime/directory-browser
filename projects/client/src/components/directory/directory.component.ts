@@ -1,4 +1,5 @@
-import { ServiceRegistry, OnInit, Router } from '../../common';
+import { ServiceRegistry } from 'utils/services';
+import { OnInit, Router } from '../../common';
 import { DirectoryService, HomeService, FileService, DownloadHandle } from '../../services';
 import { DirectoryItem, File, Folder } from '../../dto';
 import * as ko from 'knockout';
