@@ -1,5 +1,5 @@
 # Directory Browser
-The directory browser projects consist of source code for both a client and server. Both can be installed and run using the supplied `start.sh` bash script. 
+The directory browser projects consist of source code for both a client and server. Both can be installed and run from the root using `npm run start` or using the supplied `start.sh` bash script. 
 
 ## Server
 The server is written in TypeScript and Node using the NestJs framework. To manually install and run:

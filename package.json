@@ -12,8 +12,11 @@
     "make-error": "^1.3.6",
     "yn": "^3.1.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
   "scripts": {
+    "start": "concurrently \"npm run start -w=directory-browser-api\" \"npm run start --w=directory-browser-client\"",
     "test": "npm run test --workspaces"
   },
   "workspaces": [
