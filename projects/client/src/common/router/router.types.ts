@@ -1,6 +1,6 @@
 import { exists } from 'utils/functions';
 
-export interface RouteToTemplate<T extends object> {
+export interface RouteToTemplate<T extends object = Record<string, string>> {
     path: string;
     getTemplate: (params: T) => string;
 };
