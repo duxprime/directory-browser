@@ -1,10 +1,12 @@
 const commonConfig = require('./common.config');
 
-module.exports = Object.assign(commonConfig,{
+module.exports = Object.assign(commonConfig, {
   mode: 'development',
   devtool: 'inline-source-map',
   devServer: {
-      contentBase :'./dist',
-      historyApiFallback: true
+    open: true,
+    contentBase: './dist',
+    hot: true,
+    historyApiFallback: true
   }
 });
