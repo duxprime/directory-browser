@@ -1,24 +1,4 @@
-import { observable } from 'knockout';
-import { exists } from 'utils/functions';
-
-interface RouteToTemplate {
-    path: string;
-    getTemplate: (params: Record<string, string>) => string;
-};
-
-interface RouteRedirect {
-    path: string;
-    // only support a single level of indirection
-    redirect: RouteToTemplate;
-};
-
-export type RouteDefiniton = RouteToTemplate | RouteRedirect;
-
-export function isRouteRedirect(route: RouteDefiniton): route is RouteRedirect {
-    const maybeRedirect = route as RouteRedirect;
-    return exists(maybeRedirect) && exists(maybeRedirect.redirect);
-}
-
+import { RouteLoadCallback, RouteRedirect, RouteDefiniton, RouteToTemplate, isRouteRedirect } from './router.types';
 /**
  * Delimitter used to separate path segments.
  */
@@ -37,10 +17,7 @@ const WILD_CARD_ROUTE = '*';
  * Supports parameterized routes.
  */
 export class Router {
-    public readonly onRouteLoad = observable('').extend({
-        notify: 'always'
-    });
-
+    private routeLoadSubs: RouteLoadCallback[] = [];
     private outletElement?: Element;
     private defaultRoute?: RouteToTemplate;
 
@@ -81,6 +58,10 @@ export class Router {
         this.navigate(window.location.pathname, true);
     }
 
+    public subscribeToRouteChange(sub: RouteLoadCallback) {
+        this.routeLoadSubs.push(sub);
+    }
+
     private navigateToRoute(path: string, route: RouteToTemplate, params: Record<string, string>, replace = false) {
         if (!this.outletElement) {
             throw new Error('No outlet to render to. Call init() first.');
@@ -95,6 +76,10 @@ export class Router {
 
         this.outletElement.innerHTML = route.getTemplate(params);
         this.onRouteLoad(path);
+    }
+
+    private onRouteLoad(path: string) {
+        this.routeLoadSubs.forEach(notify => notify(path));
     }
 
     /**
