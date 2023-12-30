@@ -1,4 +1,4 @@
-import './styles.css';
+import './styles/global.css';
 import { Router } from './common';
 import { HttpService } from './services';
 import { registerServices, importTemplates } from './helpers';

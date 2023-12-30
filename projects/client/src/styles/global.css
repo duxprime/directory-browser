@@ -6,7 +6,7 @@
     width: 100%;
 }
 
-.half-width{
+.half-width {
     width: 50%;
 }
 
@@ -23,7 +23,7 @@
 }
 
 .highlight-hover:hover {
-    background-color:silver;
+    background-color: silver;
 }
 
 .underline-hover:hover {
