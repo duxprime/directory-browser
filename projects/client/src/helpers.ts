@@ -2,10 +2,7 @@
 import { Ctor } from 'utils/types';
 import { ServiceRegistry } from 'utils/services';
 import { Router } from './common';
-import { appRoutes } from './components/app';
-import { homeRoutes } from './views/home';
-import { directoryRoutes } from './components/directory';
-import { errorRoutes } from './views/error';
+import { routes } from './routes';
 import {
     DirectoryService,
     HttpService,
@@ -14,15 +11,12 @@ import {
     FileService
 } from './services';
 
-const routes = [
-    ...appRoutes,
-    ...homeRoutes,
-    ...directoryRoutes,
-    ...errorRoutes
-];
 type ServiceDefinition<T> = [Ctor<T>, T];
-const router = new Router(routes);
+
 const registry = new ServiceRegistry();
+ServiceRegistry.init(registry);
+
+const router = new Router(routes);
 const settings = new SettingsService();
 const http = new HttpService(settings);
 const home = new HomeService(http);
@@ -44,4 +38,14 @@ export function registerServices() {
     });
 
     return registry;
+}
+
+export async function importTemplates() {
+    await Promise.all([
+        require('./views/error/error.view'),
+        require('./views/home/home.view'),
+        require('./components/app/app.component'),
+        require('./components/directory/directory.component'),
+        require('./components/breadcrumbs/breadcrumbs.component')
+    ]);
 }
